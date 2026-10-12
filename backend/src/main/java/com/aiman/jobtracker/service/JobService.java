@@ -56,7 +56,7 @@ public class JobService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
         return toResponse(jobApplication);
     }
-    public JobResponse update(String email, Long id, JobRequest request) {
+    public JobResponse update(String email, Long id, JobRequest request) { //CRUD -> Edit method
         User user = findUser(email);
         JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
@@ -67,5 +67,10 @@ public class JobService {
         jobApplication.setNotes(request.notes());
         return toResponse(jobRepository.save(jobApplication));
     }
-
+    public void delete(String email, Long id){//CRUD -> Delete method
+        User user = findUser(email);
+        JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
+        jobRepository.delete(jobApplication);
+    }
 }
