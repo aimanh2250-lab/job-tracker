@@ -1,5 +1,7 @@
 package com.aiman.jobtracker.controller;
 
+import com.aiman.jobtracker.dto.LoginRequest;
+import com.aiman.jobtracker.dto.LoginResponse;
 import com.aiman.jobtracker.dto.RegisterRequest;
 import com.aiman.jobtracker.dto.UserResponse;
 import com.aiman.jobtracker.service.AuthService;
@@ -20,5 +22,10 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login (@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 }
