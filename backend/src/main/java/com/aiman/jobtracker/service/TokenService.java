@@ -21,10 +21,10 @@ public class TokenService {
     public String createToken(String email) { //server made a token and happen when success, user carries it and sent back to request
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("Job Tracker")
-                .issuedAt(now)
+                .issuer("Job Tracker") //my app made it
+                .issuedAt(now) //when token was made
                 .expiresAt(now.plus(1, ChronoUnit.HOURS)) //1 means hours. so after 1 hour, token expired and user need to login again
-                .subject(email)
+                .subject(email) //who it belongs
                 .build();
         JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).build();
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();

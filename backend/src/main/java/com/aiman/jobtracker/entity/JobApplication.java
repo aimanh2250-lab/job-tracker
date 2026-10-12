@@ -30,19 +30,19 @@ public class JobApplication {
     private String notes;
     private String resumePath;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false) //Many roles to one user !!!!
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) //EnumType String shows "Applied" and else instead of default "Applied = 1"
     @Column(nullable = false)
     private Status status;
 
-    public void setUser(User user) {
+    public void setUser(User user) { //method to change a field (setCompany)
         this.user = user;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(Status status) { //method to change a field (setCompany)
         this.status = status;
     }
 
@@ -71,7 +71,7 @@ public class JobApplication {
         return createdAt;
     }
 
-    public String getCompany() {
+    public String getCompany() { //method to read a field (getCompany)
         return company;
     }
 

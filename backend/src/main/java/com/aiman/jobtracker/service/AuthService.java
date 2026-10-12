@@ -28,7 +28,7 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "This Email already exist and register");
         }
         String hash = passwordEncoder.encode(request.password());
-        User saved = userRepository.save(new User(request.email(), hash));
+        User saved = userRepository.save(new User(request.email(), hash)); // Why hash? easy part
         return new UserResponse(saved.getId() , saved.getEmail());
     }
     public LoginResponse login(LoginRequest request) { //email or password is incorrect. throw error

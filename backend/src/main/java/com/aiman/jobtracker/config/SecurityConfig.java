@@ -27,7 +27,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
-                    .requestMatchers("/api/auth/**", "/error").permitAll()
+                    .requestMatchers("/api/auth/**", "/error").permitAll() //Wrong request (409, 400 and else) secretly forward to hidden address which is errors and permit all tell exactly what is the error
                     .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));

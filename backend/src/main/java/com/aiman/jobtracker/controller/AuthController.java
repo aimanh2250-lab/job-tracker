@@ -16,8 +16,8 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse register (@Valid @RequestBody RegisterRequest request) {
-        return authService.register(request);
+    public UserResponse register (@Valid @RequestBody RegisterRequest request) { //Valid : stop automatic constrains
+        return authService.register(request);                      // means email is abc and pass is 123 can be saved
     }
 
     public AuthController(AuthService authService) {
