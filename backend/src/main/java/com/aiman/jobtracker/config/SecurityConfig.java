@@ -12,9 +12,12 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Configuration
@@ -35,8 +38,8 @@ public class SecurityConfig {
         }
 
     private SecretKey secretKey(){
-        byte[] bytes = Base64.getDecoder().decode(jwtSecret);
-        return new SecretKeySpec(bytes, "HmacSHA256");
+        byte[] bytes = Base64.getDecoder().decode(jwtSecret); // turn the secret text back into the real key (bytes) -> app.properties to byte (32)
+        return new SecretKeySpec(bytes, "HmacSHA256"); // wrap the bytes as a key for HS256 token signing
     }
 
     @Bean
@@ -47,5 +50,15 @@ public class SecurityConfig {
     @Bean
     public JwtEncoder jwtEncoder(){
         return new NimbusJwtEncoder(new ImmutableSecret<>( secretKey()));
+    }
+    @Bean
+    UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE")); //CRUD METHOD
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type")); //"Authorization" : token, "Content-Type" : Json
+        return source;
     }
 }
