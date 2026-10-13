@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.config;
+package com.aiman.jobtracker.config; //setup that get from application.properties(sec key value), rules (who may enter) inside securityconfig(setup classes: security rules, token maker/checker, password scramble)
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.beans.factory.annotation.Value;

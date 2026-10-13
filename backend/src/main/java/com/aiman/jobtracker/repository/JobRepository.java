@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.repository;
+package com.aiman.jobtracker.repository; //save and loads from database and send data to service
 
 import com.aiman.jobtracker.entity.JobApplication;
 import com.aiman.jobtracker.entity.User;
@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface JobRepository extends JpaRepository <JobApplication,Long> {
     Page<JobApplication> findByUser(User user , Pageable pageable);
-    Optional<JobApplication> findByIdAndUser(Long id, User user);
+    Optional<JobApplication> findByIdAndUser(Long id, User user); //stop user b to read user a jobs
 
 }

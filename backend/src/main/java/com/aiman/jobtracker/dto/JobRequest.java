@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.dto;
+package com.aiman.jobtracker.dto; //handles what goes in and out between browser and app
 
 import com.aiman.jobtracker.entity.Status;
 import jakarta.validation.constraints.NotBlank;

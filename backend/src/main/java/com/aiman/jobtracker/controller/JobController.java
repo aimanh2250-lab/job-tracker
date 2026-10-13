@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.controller;
+package com.aiman.jobtracker.controller; //handles the web part : reads token from browser after user login and sends answer + stat code
 
 import com.aiman.jobtracker.dto.JobRequest;
 import com.aiman.jobtracker.dto.JobResponse;

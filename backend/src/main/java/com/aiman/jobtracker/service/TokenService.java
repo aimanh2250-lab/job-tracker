@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.service;
+package com.aiman.jobtracker.service; //does the real work after controller reads token inc rules and check the owner
 
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
