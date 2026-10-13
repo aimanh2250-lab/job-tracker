@@ -50,7 +50,7 @@ public class JobService {
     public Page<JobResponse> list(String email, String q, Status status, Pageable pageable){ //my job
         User user = findUser(email);
         if (q == null){
-            q = "";
+            q = ""; //empty search parameter arrive as null. PostgreSQL can't apply lower() to a null of unknown type. so turn into empty string
         }
         return jobRepository.search(user, status, q, pageable).map(job -> toResponse(job));
     }

@@ -27,8 +27,8 @@ public class JobController {
 
     @GetMapping //List Method means open page cna see all the application
     public Page<JobResponse> list (@AuthenticationPrincipal Jwt jwt, @RequestParam(required = false) String q, @RequestParam(required = false) Status status, @PageableDefault(size = 10, sort = "appliedDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        return jobService.list(jwt.getSubject(), q, status, pageable); //Req Param : reads the extra settings after the ? in an address
-    }                                                                  //eg:/api/jobs(dish)?q=grab&status=APPLIED(extra wish)
+        return jobService.list(jwt.getSubject(), q, status, pageable); //Req Param : reads the extra settings after the ? in an address (eg:/api/jobs(dish)?q=grab&status=APPLIED(extra wish))
+    }                                                                  //Searching only asks for data, so the search words go in the address. Saving sends data, so the form goes in the body
 
     @GetMapping("/{id}") //get one method means to see the job details
     public JobResponse getOne (@AuthenticationPrincipal Jwt jwt, @PathVariable Long id){ //AuthenticationPrincipal:the token
