@@ -3,6 +3,7 @@ package com.aiman.jobtracker.service; //does the real work after controller read
 import com.aiman.jobtracker.dto.JobRequest;
 import com.aiman.jobtracker.dto.JobResponse;
 import com.aiman.jobtracker.entity.JobApplication;
+import com.aiman.jobtracker.entity.Status;
 import com.aiman.jobtracker.entity.User;
 import com.aiman.jobtracker.repository.JobRepository;
 import com.aiman.jobtracker.repository.UserRepository;
@@ -46,9 +47,12 @@ public class JobService {
          JobApplication saved = jobRepository.save(job); //save it
          return toResponse(saved); //send it back Data transfer obj
     }
-    public Page<JobResponse> list(String email, Pageable pageable){ //my job
+    public Page<JobResponse> list(String email, String q, Status status, Pageable pageable){ //my job
         User user = findUser(email);
-        return jobRepository.findByUser(user, pageable).map(job -> toResponse(job));
+        if (q == null){
+            q = "";
+        }
+        return jobRepository.search(user, status, q, pageable).map(job -> toResponse(job));
     }
     public JobResponse getOne(String email, Long id){ //view one job
         User user = findUser(email);
