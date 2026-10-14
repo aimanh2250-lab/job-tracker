@@ -9,7 +9,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         e.preventDefault(); //stops the page from reloading
-        try{
+        try{ //error method
             await api("/api/auth/register", {method: "POST", body: JSON.stringify({ email, password }) });//JSON.stringify changes memory to json
             navigate("/login");
         } catch (err){
@@ -24,7 +24,7 @@ export default function RegisterPage() {
             <input className = "border rounded p-2" placeholder="Password" type="password"
                    value={password} onChange={(e) => setPassword(e.target.value)} />
             <button className="bg-blue-600 text-white rounded p-2">Register</button>
-            {error && <p className="text-red-600">{error}</p>}
+            {error && <p className="text-red-600">{error}</p>} {/*red error message*/}
         </form>
         );
     }
