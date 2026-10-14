@@ -1,3 +1,24 @@
+import {type FormEvent, useState} from "react";
+import { useNavigate } from "react-router";
+import {api} from "../api.ts";
+
 export default function RegisterPage() {
-    return <h1 className="text-2xl font-bold p-8">Register</h1>
-}
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    async function handleSubmit(e: FormEvent<HTMLFormElement>){
+        e.preventDefault(); //stops the page from reloading
+        await api("/api/auth/register", {method: "POST", body: JSON.stringify({ email, password }) });//JSON.stringify changes memory to json
+        navigate("/login")
+    }
+    return(
+        <form className= "max-w-sm mx-auto mt-16 flex flex-col gap-3" onSubmit={handleSubmit}>
+            <h1 className="text-2xl font-bold">Register</h1>
+            <input className = "border rounded p-2" placeholder="Email" type="email"
+                   value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className = "border rounded p-2" placeholder="Password" type="password"
+                   value={password} onChange={(e) => setPassword(e.target.value)} />
+            <button className="bg-blue-600 text-white rounded p-2">Register</button>
+        </form>
+        );
+    }
