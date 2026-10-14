@@ -9,6 +9,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         e.preventDefault(); //stops the page from reloading
+        localStorage.removeItem("token");
         try{ //error method
             const data = await api ("/api/auth/login", {method: "POST", body: JSON.stringify({ email, password }) }); //JSON.stringify changes memory to json
             localStorage.setItem("token", data.token);
