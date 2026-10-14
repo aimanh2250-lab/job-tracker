@@ -12,6 +12,11 @@ export async function api(path: string, options: RequestInit = {}) {
         ...options, //copy everything the caller gave (POST)
         headers: headers,
     });
+    if (response.status === 401 && !path.startsWith("/api/auth")){ //auto return to login when the token is missing or dead
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    }
+
     if (!response.ok){ //the answer was a success (200 - 299). ! : NOT
         const problem = await response.json().catch(() => ({})); //.catch(().. : handles the fact some errors (like 401) come with no body
         throw new Error(problem.detail ?? "Something went wrong"); //?? : if thats missing, use this instead
