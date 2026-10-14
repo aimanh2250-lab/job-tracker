@@ -1,0 +1,23 @@
+//one function that every page uses to talk to backend
+
+const BASE_URL = "http://localhost:8080"; //backend ports
+
+export async function api(path: string, options: RequestInit = {}) {
+    const token = localStorage.getItem("token"); //read token from local storage
+    const headers: Record<string, string> = {"Content-Type": "application/json"};
+    if (token){
+        headers["Authorization"] = "Bearer " + token; //read token from Auth with Bearer in front
+    }
+    const response = await fetch(BASE_URL + path, {
+        ...options, //copy everything the caller gave (POST)
+        headers: headers,
+    });
+    if (!response.ok){ //the answer was a success (200 - 299). ! : NOT
+        const problem = await response.json().catch(() => ({})); //.catch(().. : handles the fact some errors (like 401) come with no body
+        throw new Error(problem.detail ?? "Something went wrong"); //?? : if thats missing, use this instead
+    }                                                              //throw... :stops and passes the message to the page
+    if (response.status === 204){ //204 : "No Content"
+        return null;
+    }
+    return response.json();
+}
