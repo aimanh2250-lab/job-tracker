@@ -8,19 +8,21 @@ export default function JobsPage(){
     const [jobs , setJobs] = useState<Job[]>([]);
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState('');
+    const [sort , setSort] = useState('appliedDate,desc');
 
-useEffect(() => { //fetch the jobs from the backend once and put then in jobs memory
+useEffect(() => { //reloads whenever search, status or sort change
     async function load(){
         const params = new URLSearchParams();
-        params.set("q", search);
-        if (status){
+        params.set("q", search); //search func
+        params.set("sort", sort); //add the chosen order (?sort=)
+        if (status){ //only if a status is chosen, add ?status=
             params.set("status", status);
         }
         const data:JobPage = await api("/api/jobs?" + params.toString());
         setJobs(data.content);
     }
     load();
-}, [search , status]);
+}, [search , status , sort]);
 
 function handleLogout(){ //log out: forget the token and go to login
     localStorage.removeItem("token");
@@ -34,15 +36,21 @@ return (
         <input className = "border rounded p-2" placeholder="Search company or role" type="search" /* search function */
                value={search} onChange={(e) => setSearch(e.target.value)} />
         <select className="border rounded p-2"
-                value={status} onChange={(e) => setStatus(e.target.value)}>
+                value={status} onChange={(e) => setStatus(e.target.value)}> {/* filter by status */}
             <option value="">All Status</option>
             <option value="APPLIED">Applied</option>
             <option value="INTERVIEW">Interview</option>
             <option value="OFFER">Offer</option>
             <option value="REJECTED">Rejected</option>
         </select>
+        <select className="border rounded p-2" /* choose the order (newest, oldest, A–Z) */
+                value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="appliedDate,desc">Newest First</option>
+            <option value="appliedDate,asc">Oldest First</option>
+            <option value="company,asc">Company A - Z</option>
+        </select>
     <ul>
-        {jobs.map((job) => ( /* for EACH job in the jobs box… */
+        {jobs.map((job) => ( /* for EACH job in the jobs box*/
             <li key={job.id}>{job.company} - {job.role} - {job.status}</li> /* what the line shows */
             ))}
     </ul></div>
