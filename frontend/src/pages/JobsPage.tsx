@@ -39,9 +39,9 @@ return (
         <h1 className="text-2xl font-bold">My Jobs</h1>
         <button className="bg-blue-600 text-white rounded p-2" onClick={handleLogout}>Logout</button> {/* logout button */}
         <input className = "border rounded p-2" placeholder="Search company or role" type="search" /* search function */
-               value={search} onChange={(e) => setSearch(e.target.value)} />
+               value={search} onChange={(e) => {setSearch(e.target.value); setPage(0);}}/>
         <select className="border rounded p-2"
-                value={status} onChange={(e) => setStatus(e.target.value)}> {/* filter by status */}
+                value={status} onChange={(e) => {setStatus(e.target.value); setPage(0);}}> {/* filter by status */}
             <option value="">All Status</option>
             <option value="APPLIED">Applied</option>
             <option value="INTERVIEW">Interview</option>
@@ -49,7 +49,7 @@ return (
             <option value="REJECTED">Rejected</option>
         </select>
         <select className="border rounded p-2" /* choose the order (newest, oldest, A-Z) */
-                value={sort} onChange={(e) => setSort(e.target.value)}>
+                value={sort} onChange={(e) => {setSort(e.target.value); setPage(0);}}>
             <option value="appliedDate,desc">Newest First</option>
             <option value="appliedDate,asc">Oldest First</option>
             <option value="company,asc">Company A - Z</option>
