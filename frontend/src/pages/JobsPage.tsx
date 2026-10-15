@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type {Job, JobPage} from "../types.ts";
 import { api } from "../api";
-import {useNavigate} from "react-router";
+import {Link, useNavigate} from "react-router";
 
 export default function JobsPage(){
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ useEffect(() => { //reloads whenever search, status or sort change or page
 
     }
     load();
-}, [search , status , sort , page]);
+}, [search , status , sort , page]); //watch list : if any of this change then react runs the effect and reload the job list
 
 function handleLogout(){ //log out: forget the token and go to login
     localStorage.removeItem("token");
@@ -38,6 +38,7 @@ return (
     <div className="p-8">
         <h1 className="text-2xl font-bold">My Jobs</h1>
         <button className="bg-blue-600 text-white rounded p-2" onClick={handleLogout}>Logout</button> {/* logout button */}
+        <Link className="bg-blue-600 text-white rounded p-2" to="/jobs/new">Add job</Link>
         <input className = "border rounded p-2" placeholder="Search company or role" type="search" /* search function */
                value={search} onChange={(e) => {setSearch(e.target.value); setPage(0);}}/>
         <select className="border rounded p-2"
@@ -56,8 +57,9 @@ return (
         </select>
     <ul>
         {jobs.map((job) => ( /* for EACH job in the jobs box*/
-            <li key={job.id}>{job.company} - {job.role} - {job.status}</li> /* what the line shows */
-            ))}
+        <li key={job.id}>{job.company} - {job.role} - {job.status}
+            <Link className="text-blue-600 underline ml-2" to={"/jobs/" + job.id + "/edit"}>Edit</Link></li>/* what the line shows */
+        ))}
     </ul>
         <button className="bg-sky-500 hover:bg-sky-700 text-white rounded p-2 disabled:opacity-50"
                 onClick={() => setPage(page - 1)} disabled={page === 0}>Previous</button> {/* go back one page; faded on the first page */}
