@@ -10,7 +10,7 @@ export default function LoginPage() {
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         e.preventDefault(); //stops the page from reloading
         localStorage.removeItem("token");
-        try{ //error method
+        try{ //try this; if it fails, catch shows the error
             const data = await api ("/api/auth/login", {method: "POST", body: JSON.stringify({ email, password }) }); //JSON.stringify changes memory to json
             localStorage.setItem("token", data.token);
             navigate("/jobs");

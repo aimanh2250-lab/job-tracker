@@ -5,7 +5,7 @@ import JobsPage from "./pages/JobsPage.tsx";
 
 export default function App() {
   return(
-      <Routes> //routes between the page
+      <Routes> {/*routes between the page*/}
         <Route path ="/login" element={<LoginPage />} />
         <Route path ="/register" element={<RegisterPage />} />
         <Route path ="/jobs" element={<JobsPage />} />

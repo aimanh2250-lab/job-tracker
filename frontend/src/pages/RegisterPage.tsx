@@ -9,7 +9,7 @@ export default function RegisterPage() {
     const navigate = useNavigate();
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         e.preventDefault(); //stops the page from reloading
-        try{ //error method
+        try{ //try this; if it fails, catch shows the error
             await api("/api/auth/register", {method: "POST", body: JSON.stringify({ email, password }) });//JSON.stringify changes memory to json
             navigate("/login");
         } catch (err){
