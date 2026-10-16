@@ -1,5 +1,5 @@
 import {type FormEvent, useState} from "react";
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
 import {api} from "../api.ts";
 
 export default function RegisterPage() {

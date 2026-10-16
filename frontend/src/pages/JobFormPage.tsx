@@ -4,27 +4,28 @@ import {api} from "../api.ts";
 import {useNavigate} from "react-router";
 import type {Job} from "../types.ts";
 
-export default function JobFormPage(){
+export default function JobFormPage() {
     const {id} = useParams();
     const isEdit = id !== undefined; // !== is NOT
-    const [company , setCompany] = useState('');
+    const [company, setCompany] = useState('');
     const [role, setRole] = useState('');
     const [appliedDate, setAppliedDate] = useState('');
-    const [notes , setNotes] = useState('');
+    const [notes, setNotes] = useState('');
     const [status, setStatus] = useState('APPLIED');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-useEffect(() =>{
-    async function load(){
-        if (!isEdit) return;
-        const job: Job = await api("/api/jobs/" + id);
-        setCompany(job.company);
-        setRole(job.role);
-        setAppliedDate(job.appliedDate);
-        setStatus(job.status);
-        setNotes(job.notes ?? "");
+    useEffect(() => {
+        async function load() {
+            if (!isEdit) return;
+            const job: Job = await api("/api/jobs/" + id);
+            setCompany(job.company);
+            setRole(job.role);
+            setAppliedDate(job.appliedDate);
+            setStatus(job.status);
+            setNotes(job.notes ?? "");
         }
+
         load();
     }, [id, isEdit]);
 
@@ -32,10 +33,10 @@ useEffect(() =>{
         e.preventDefault(); //stops the page from reloading
         try { //try this; if it fails, catch shows the error
             const body = JSON.stringify({company, role, notes, appliedDate, status});//JSON.stringify changes memory to json
-            if (isEdit){
-                await api("/api/jobs/" + id, {method: "PUT", body:body});
+            if (isEdit) {
+                await api("/api/jobs/" + id, {method: "PUT", body: body});
             } else {
-                await api("/api/jobs", { method: "POST", body: body });
+                await api("/api/jobs", {method: "POST", body: body});
             }
             navigate("/jobs");
         } catch (err) {
@@ -51,8 +52,9 @@ useEffect(() =>{
             <input className="border rounded p-2" placeholder="Role" value={role} required={true}
                    onChange={(e) => setRole(e.target.value)}/>
             <textarea className="border rounded p-2" placeholder="Notes" value={notes}
-                   onChange={(e) => setNotes(e.target.value)}/>
-            <input className="border rounded p-2" placeholder="Applied Date" type="date" value={appliedDate} required={true}
+                      onChange={(e) => setNotes(e.target.value)}/>
+            <input className="border rounded p-2" placeholder="Applied Date" type="date" value={appliedDate}
+                   required={true}
                    onChange={(e) => setAppliedDate(e.target.value)}/>
             <select className="border rounded p-2" value={status}
                     onChange={(e) => setStatus(e.target.value)}> {/* filter by status */}
