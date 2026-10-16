@@ -34,6 +34,13 @@ function handleLogout(){ //log out: forget the token and go to login
     navigate("/login");
 }
 
+    async function handleDelete(id:number){ //delete jobs method
+        if (window.confirm("Do you want to delete this job?")){
+            await api("/api/jobs/" + id, {method: "DELETE"});
+            setJobs(jobs.filter((job) => job.id !== id)); //keep everything excepts one that removed
+        }
+    }
+
 return (
     <div className="p-8">
         <h1 className="text-2xl font-bold">My Jobs</h1>
@@ -58,7 +65,9 @@ return (
     <ul>
         {jobs.map((job) => ( /* for EACH job in the jobs box*/
         <li key={job.id}>{job.company} - {job.role} - {job.status}
-            <Link className="text-blue-600 underline ml-2" to={"/jobs/" + job.id + "/edit"}>Edit</Link></li>/* what the line shows */
+            <Link className="text-blue-600 underline ml-2" to={"/jobs/" + job.id + "/edit"}>Edit</Link>
+            <button className="text-red-600 underline ml-2" onClick={() => handleDelete(job.id)}>Delete</button>
+        </li>/* what the line shows */
         ))}
     </ul>
         <button className="bg-sky-500 hover:bg-sky-700 text-white rounded p-2 disabled:opacity-50"
