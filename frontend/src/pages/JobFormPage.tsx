@@ -1,5 +1,7 @@
 import {Link, useParams} from "react-router";
-import {useState} from "react";
+import {type FormEvent, useState} from "react";
+import {api} from "../api.ts";
+import {useNavigate} from "react-router";
 
 export default function JobFormPage(){
     const {id} = useParams();
@@ -9,17 +11,29 @@ export default function JobFormPage(){
     const [appliedDate, setAppliedDate] = useState('');
     const [notes , setNotes] = useState('');
     const [status, setStatus] = useState('APPLIED');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault(); //stops the page from reloading
+        try { //try this; if it fails, catch shows the error
+            await api("/api/jobs", {method: "POST", body: JSON.stringify({company, role, appliedDate, notes, status})});//JSON.stringify changes memory to json
+            navigate("/jobs");
+        } catch (err) {
+            setError((err as Error).message);
+        }
+    }
 
     return (
-        <form className="max-w-sm mx-auto mt-16 flex flex-col gap-3">
+        <form className="max-w-sm mx-auto mt-16 flex flex-col gap-3" onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold p-8">{isEdit ? "Edit job" : "Add job"}</h1>
-            <input className="border rounded p-2" placeholder="Company" value={company}
+            <input className="border rounded p-2" placeholder="Company" value={company} required={true}
                    onChange={(e) => setCompany(e.target.value)}/>
-            <input className="border rounded p-2" placeholder="Role" value={role}
+            <input className="border rounded p-2" placeholder="Role" value={role} required={true}
                    onChange={(e) => setRole(e.target.value)}/>
             <textarea className="border rounded p-2" placeholder="Notes" value={notes}
                    onChange={(e) => setNotes(e.target.value)}/>
-            <input className="border rounded p-2" placeholder="Applied Date" type="date" value={appliedDate}
+            <input className="border rounded p-2" placeholder="Applied Date" type="date" value={appliedDate} required={true}
                    onChange={(e) => setAppliedDate(e.target.value)}/>
             <select className="border rounded p-2" value={status}
                     onChange={(e) => setStatus(e.target.value)}> {/* filter by status */}
@@ -30,6 +44,7 @@ export default function JobFormPage(){
             </select>
             <button className="bg-blue-600 text-white rounded p-2">Save</button>
             <Link to="/jobs">Cancel</Link>
+            {error && <p className="text-red-600">{error}</p>} {/*red error message*/}
         </form>
     );
 }
