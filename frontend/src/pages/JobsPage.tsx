@@ -92,16 +92,34 @@ export default function JobsPage() {
                         <option value="company,asc">Company A - Z</option>
                     </select>
                 </div>
-                <ul>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {jobs.map((job) => ( /* for EACH job in the jobs box*/
-                        <li key={job.id}>{job.company} - {job.role} - {job.status}
-                            <Link className="text-blue-600 underline ml-2" to={"/jobs/" + job.id + "/edit"}>Edit</Link>
-                            <button className="text-red-600 underline ml-2"
-                                    onClick={() => handleDelete(job.id)}>Delete
-                            </button>
-                        </li>/* what the line shows */
+                        <div key={job.id}
+                             className="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition flex flex-col">
+                            <div className="flex items-start justify-between gap-2">
+                                <h2 className="font-semibold text-lg">{job.company}</h2>
+                                <span
+                                    className="text-xs font-medium px-2 py-1 rounded-full bg-gray-100">{job.status}</span>
+                            </div>
+                            <p className="text-gray-600">{job.role}</p>
+                            <p className="text-sm text-gray-500 mt-2">
+                                Applied {new
+                            Date(job.appliedDate).toLocaleDateString("en-GB", {
+                                day:
+                                    "numeric", month: "short", year: "numeric"
+                            })}
+                            </p>
+                            {job.notes && <p className="text-sm text-gray-500 italic mt-2">{job.notes}</p>}
+                            <div className="mt-auto pt-4 flex justify-end gap-3">
+                                <Link className="text-blue-600 underline ml-2"
+                                      to={"/jobs/" + job.id + "/edit"}>Edit</Link>
+                                <button className="text-red-600 underline ml-2"
+                                        onClick={() => handleDelete(job.id)}>Delete
+                                </button>
+                            </div>
+                        </div>
                     ))}
-                </ul>
+                </div>
                 <button className="bg-sky-500 hover:bg-sky-700 text-white rounded p-2 disabled:opacity-50"
                         onClick={() => setPage(page - 1)} disabled={page === 0}>Previous
                 </button>
