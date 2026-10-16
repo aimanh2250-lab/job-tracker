@@ -1,7 +1,8 @@
 import {Link, useParams} from "react-router";
-import {type FormEvent, useState} from "react";
+import {type FormEvent, useEffect, useState} from "react";
 import {api} from "../api.ts";
 import {useNavigate} from "react-router";
+import type {Job} from "../types.ts";
 
 export default function JobFormPage(){
     const {id} = useParams();
@@ -14,10 +15,28 @@ export default function JobFormPage(){
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+useEffect(() =>{
+    async function load(){
+        if (!isEdit) return;
+        const job: Job = await api("/api/jobs/" + id);
+        setCompany(job.company);
+        setRole(job.role);
+        setAppliedDate(job.appliedDate);
+        setStatus(job.status);
+        setNotes(job.notes ?? "");
+        }
+        load();
+    }, [id, isEdit]);
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault(); //stops the page from reloading
         try { //try this; if it fails, catch shows the error
-            await api("/api/jobs", {method: "POST", body: JSON.stringify({company, role, appliedDate, notes, status})});//JSON.stringify changes memory to json
+            const body = JSON.stringify({company, role, notes, appliedDate, status});//JSON.stringify changes memory to json
+            if (isEdit){
+                await api("/api/jobs/" + id, {method: "PUT", body:body});
+            } else {
+                await api("/api/jobs", { method: "POST", body: body });
+            }
             navigate("/jobs");
         } catch (err) {
             setError((err as Error).message);
