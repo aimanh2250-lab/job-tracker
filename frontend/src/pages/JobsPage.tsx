@@ -48,6 +48,7 @@ export default function JobsPage() {
         if (window.confirm("Do you want to delete this job?")) {
             await api("/api/jobs/" + id, {method: "DELETE"});
             setJobs(jobs.filter((job) => job.id !== id)); //keep everything excepts one that removed
+            setTotalElements(totalElements - 1);
         }
     }
 
@@ -99,6 +100,12 @@ export default function JobsPage() {
                         <option value="company,asc">Company A - Z</option>
                     </select>
                 </div>
+                {jobs.length === 0 && (
+                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center text-gray-500">
+                        <p>No Jobs Found</p>
+                        <Link className="text-blue-600 underline" to="/jobs/new">Add job</Link>
+                    </div>
+                )}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {jobs.map((job) => ( /* for EACH job in the jobs box*/
                         <div key={job.id}
@@ -127,6 +134,7 @@ export default function JobsPage() {
                         </div>
                     ))}
                 </div>
+                <div className="flex items-center justify-center gap-3 mt-8">
                 <button className="bg-sky-500 hover:bg-sky-700 text-white rounded p-2 disabled:opacity-50"
                         onClick={() => setPage(page - 1)} disabled={page === 0}>Previous
                 </button>
@@ -134,8 +142,8 @@ export default function JobsPage() {
                 <span className="mx-2">Page {page + 1} of {totalPages} {/* show Page X of Y */}</span>
                 <button className="bg-sky-500 hover:bg-sky-700 text-white rounded p-2 disabled:opacity-50"
                         onClick={() => setPage(page + 1)} disabled={page + 1 >= totalPages}>Next
-                </button>
-                {/* go forward one page; faded on the last page */}
+                </button> {/* go forward one page; faded on the last page */}
+                </div>
             </div>
         </div>
 
