@@ -21,15 +21,17 @@ export default function LoginPage() {
     }
 
     return (
-        <form className="max-w-sm mx-auto mt-16 flex flex-col gap-3" onSubmit={handleSubmit}>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <form className="bg-white rounded-xl shadow-sm p-8 w-full max-w-sm flex flex-col gap-4" onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold">Log in</h1>
-            <input className="border rounded p-2" placeholder="Email" type="email"
+            <input className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Email" type="email"
                    value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <input className="border rounded p-2" placeholder="Password" type="password"
+            <input className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Password" type="password"
                    value={password} onChange={(e) => setPassword(e.target.value)}/>
-            <button className="bg-blue-600 text-white rounded p-2">Log In</button>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 font-medium">Log In</button>
             {error && <p className="text-red-600">{error}</p>} {/*red error message*/}
-            <Link to="/register">No Account ? Register here</Link>
+            <Link className="text-sm text-blue-600 hover:underline text-center" to="/register">Register here</Link>
         </form>
+        </div>
     );
 }

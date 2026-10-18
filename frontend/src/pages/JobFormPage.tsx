@@ -45,27 +45,29 @@ export default function JobFormPage() {
     }
 
     return (
-        <form className="max-w-sm mx-auto mt-16 flex flex-col gap-3" onSubmit={handleSubmit}>
-            <h1 className="text-2xl font-bold p-8">{isEdit ? "Edit job" : "Add job"}</h1>
-            <input className="border rounded p-2" placeholder="Company" value={company} required={true}
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <form className="bg-white rounded-xl shadow-sm p-8 w-full max-w-sm flex flex-col gap-4" onSubmit={handleSubmit}>
+            <h1 className="text-2xl font-bold">{isEdit ? "Edit job" : "Add job"}</h1>
+            <input className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Company" value={company} required={true}
                    onChange={(e) => setCompany(e.target.value)}/>
-            <input className="border rounded p-2" placeholder="Role" value={role} required={true}
+            <input className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Role" value={role} required={true}
                    onChange={(e) => setRole(e.target.value)}/>
-            <textarea className="border rounded p-2" placeholder="Notes" value={notes}
+            <textarea className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Notes" value={notes}
                       onChange={(e) => setNotes(e.target.value)}/>
-            <input className="border rounded p-2" placeholder="Applied Date" type="date" value={appliedDate}
+            <input className ="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Applied Date" type="date" value={appliedDate}
                    required={true}
                    onChange={(e) => setAppliedDate(e.target.value)}/>
-            <select className="border rounded p-2" value={status}
+            <select className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" value={status}
                     onChange={(e) => setStatus(e.target.value)}> {/* filter by status */}
                 <option value="APPLIED">Applied</option>
                 <option value="INTERVIEW">Interview</option>
                 <option value="OFFER">Offer</option>
                 <option value="REJECTED">Rejected</option>
             </select>
-            <button className="bg-blue-600 text-white rounded p-2">Save</button>
-            <Link to="/jobs">Cancel</Link>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 font-medium">Save</button>
+            <Link className="text-sm text-gray-500 hover:underline text-center" to="/jobs">Cancel</Link>
             {error && <p className="text-red-600">{error}</p>} {/*red error message*/}
         </form>
+        </div>
     );
 }
