@@ -1,7 +1,14 @@
 import {useState, useEffect} from 'react';
-import type {Job, JobPage} from "../types.ts";
+import type {Job, JobPage, Status} from "../types.ts";
 import {api} from "../api";
 import {Link, useNavigate} from "react-router";
+
+const statusColors : Record<Status, string> = {
+    APPLIED: "bg-blue-100 text-blue-700",
+    INTERVIEW: "bg-amber-100 text-amber-700",
+    OFFER: "bg-green-100 text-green-700",
+    REJECTED: "bg-red-100 text-red-700",
+}
 
 export default function JobsPage() {
     const navigate = useNavigate();
@@ -99,7 +106,7 @@ export default function JobsPage() {
                             <div className="flex items-start justify-between gap-2">
                                 <h2 className="font-semibold text-lg">{job.company}</h2>
                                 <span
-                                    className="text-xs font-medium px-2 py-1 rounded-full bg-gray-100">{job.status}</span>
+                                    className={"text-xs font-medium px-2 py-1 rounded-full " + statusColors[job.status]}>{job.status}</span>
                             </div>
                             <p className="text-gray-600">{job.role}</p>
                             <p className="text-sm text-gray-500 mt-2">
