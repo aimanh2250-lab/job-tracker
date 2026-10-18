@@ -7,16 +7,28 @@ import com.aiman.jobtracker.entity.Status;
 import com.aiman.jobtracker.entity.User;
 import com.aiman.jobtracker.repository.JobRepository;
 import com.aiman.jobtracker.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.Pageable;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class JobService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
+    @Value("${app.upload-dir}")
+    private String uploadDir;
 
     public JobService(JobRepository jobRepository, UserRepository userRepository) {
         this.jobRepository = jobRepository;
@@ -76,5 +88,25 @@ public class JobService {
         JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
         jobRepository.delete(jobApplication);
+    }
+
+    public void setUploadDir(String uploadDir) {
+        this.uploadDir = uploadDir;
+    }
+
+    public JobResponse uploadResume(String email, Long id, MultipartFile file) throws IOException {
+        User user = findUser(email);
+        JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
+        List<String> allowed = List.of("application/pdf","application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        if (file.isEmpty() || !allowed.contains(file.getContentType())) {  //|| : OR
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only PDF or DOCX files are allowed");
+        }
+        Path dir = Paths.get(uploadDir).toAbsolutePath();
+        Files.createDirectories(dir);
+        String name = UUID.randomUUID() + (file.getContentType().equals("application/pdf") ? ".pdf" : ".docx");
+        Files.copy(file.getInputStream(), dir.resolve(name), StandardCopyOption.REPLACE_EXISTING);
+        jobApplication.setResumePath(name);
+        return toResponse(jobRepository.save(jobApplication));
     }
 }
