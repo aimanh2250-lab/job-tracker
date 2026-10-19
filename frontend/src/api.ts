@@ -30,3 +30,16 @@ export async function api(path: string, options: RequestInit = {}) {
     }
     return response.json();
 }
+
+export async function downloadFile(path: string, fileName: string) {
+    const token = localStorage.getItem("token");
+    const response = await fetch(BASE_URL + path, { headers: { Authorization: "Bearer " + token } });
+    if (!response.ok) throw new Error("Could not download the file");
+    const blob = await response.blob(); // the file, in memory
+    const url = URL.createObjectURL(blob); // a temporary address for it
+    const link = document.createElement("a"); // an invisible link
+    link.href = url;
+    link.download = fileName + (blob.type === "application/pdf" ? ".pdf" : ".docx");
+    link.click(); //that clicks itself
+    URL.revokeObjectURL(url); // clean up
+}

@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import type {Job, JobPage, Status} from "../types.ts";
-import {api} from "../api";
+import {api, downloadFile} from "../api";
 import {Link, useNavigate} from "react-router";
 
 const statusColors : Record<Status, string> = {
@@ -126,6 +126,11 @@ export default function JobsPage() {
                             <div className="mt-auto pt-4 flex justify-end gap-3">
                                 <Link className="text-blue-600 underline ml-2"
                                       to={"/jobs/" + job.id + "/edit"}>Edit</Link>
+                                {job.hasResume && (
+                                <button className="text-gray-700 underline ml-2"
+                                        onClick={() => downloadFile("/api/jobs/" + job.id + "/resume", "resume-" + job.company)}>Resume
+                                </button>
+                                )}
                                 <button className="text-red-600 underline ml-2"
                                         onClick={() => handleDelete(job.id)}>Delete
                                 </button>
