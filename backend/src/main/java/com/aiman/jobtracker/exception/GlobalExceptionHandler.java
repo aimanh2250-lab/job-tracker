@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException; //the error
 import org.springframework.web.bind.annotation.ExceptionHandler; //when this error "  " happend, run this method
 import org.springframework.web.bind.annotation.RestControllerAdvice; //watch all controllers for errors
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException; //catch wrong value
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler (MethodArgumentTypeMismatchException.class)
     public ProblemDetail handleBadParam (MethodArgumentTypeMismatchException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid value " + ex.getName()); //+ : join these two text together
+    }
+    @ExceptionHandler (MaxUploadSizeExceededException.class)
+    public ProblemDetail handleTooBig (MaxUploadSizeExceededException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONTENT_TOO_LARGE, "File is too large (max 5 MB)");
     }
 
 }
