@@ -11,6 +11,7 @@ public record JobResponse(
         LocalDate appliedDate,
         Status status,
         String notes,
-        Instant createdAt
+        Instant createdAt,
+        boolean hasResume
 ) {
 }

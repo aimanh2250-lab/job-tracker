@@ -42,7 +42,8 @@ public class JobService {
                 job.getAppliedDate(),
                 job.getStatus(),
                 job.getNotes(),
-                job.getCreatedAt()
+                job.getCreatedAt(),
+                job.getResumePath() != null //!= is NOT
         );
     }
     private User findUser(String email){ //user deleted after their token was made. token still valid but user gone. so 401
