@@ -109,4 +109,14 @@ public class JobService {
         jobApplication.setResumePath(name);
         return toResponse(jobRepository.save(jobApplication));
     }
+
+    public Path getResume(String email , Long id) {
+        User user = findUser(email);
+        JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
+        if (jobApplication.getResumePath() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No resume uploaded");
+        }
+        return Paths.get(uploadDir).toAbsolutePath().resolve(jobApplication.getResumePath());
+    }
 }

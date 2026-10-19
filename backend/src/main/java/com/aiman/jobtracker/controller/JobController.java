@@ -4,13 +4,18 @@ import com.aiman.jobtracker.dto.JobRequest;
 import com.aiman.jobtracker.dto.JobResponse;
 import com.aiman.jobtracker.entity.Status;
 import com.aiman.jobtracker.service.JobService;
+import org.springframework.core.io.Resource;
+import java.nio.file.Path;
 import jakarta.validation.Valid;
+import org.springframework.core.io.PathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +58,13 @@ public class JobController {
     @PostMapping(value = "/{id}/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //get one method means to see the job details
     public JobResponse uploadResume (@AuthenticationPrincipal Jwt jwt, @PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException { //AuthenticationPrincipal:the token
         return jobService.uploadResume(jwt.getSubject(), id, file);
+    }
+    @GetMapping("/{id}/resume")
+    public ResponseEntity<Resource> downloadResume(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id){
+        Path file = jobService.getResume(jwt.getSubject(),id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+                .body(new PathResource(file));
     }
     public JobController(JobService jobService) {
         this.jobService = jobService;
