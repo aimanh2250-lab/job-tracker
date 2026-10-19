@@ -10,9 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -46,6 +50,10 @@ public class JobController {
         jobService.delete(jwt.getSubject(), id);
     }
 
+    @PostMapping(value = "/{id}/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //get one method means to see the job details
+    public JobResponse uploadResume (@AuthenticationPrincipal Jwt jwt, @PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException { //AuthenticationPrincipal:the token
+        return jobService.uploadResume(jwt.getSubject(), id, file);
+    }
     public JobController(JobService jobService) {
         this.jobService = jobService;
     }

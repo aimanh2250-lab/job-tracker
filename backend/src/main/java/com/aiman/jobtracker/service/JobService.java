@@ -98,7 +98,7 @@ public class JobService {
         User user = findUser(email);
         JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
-        List<String> allowed = List.of("application/pdf","application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        List<String> allowed = List.of("application/pdf","application/vnd.openxmlformats-officedocument.wordprocessingml.document"); //docx type
         if (file.isEmpty() || !allowed.contains(file.getContentType())) {  //|| : OR
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only PDF or DOCX files are allowed");
         }
