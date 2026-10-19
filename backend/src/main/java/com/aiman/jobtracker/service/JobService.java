@@ -103,10 +103,10 @@ public class JobService {
         if (file.isEmpty() || !allowed.contains(file.getContentType())) {  //|| : OR
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only PDF or DOCX files are allowed");
         }
-        Path dir = Paths.get(uploadDir).toAbsolutePath();
+        Path dir = Paths.get(uploadDir).toAbsolutePath(); //the fixed uploads folder
         Files.createDirectories(dir);
-        String name = UUID.randomUUID() + (file.getContentType().equals("application/pdf") ? ".pdf" : ".docx");
-        Files.copy(file.getInputStream(), dir.resolve(name), StandardCopyOption.REPLACE_EXISTING);
+        String name = UUID.randomUUID() + (file.getContentType().equals("application/pdf") ? ".pdf" : ".docx"); //the server makes the name, and the user’s file name is never used
+        Files.copy(file.getInputStream(), dir.resolve(name), StandardCopyOption.REPLACE_EXISTING); //saves the file inside that folder, under the safe name
         jobApplication.setResumePath(name);
         return toResponse(jobRepository.save(jobApplication));
     }

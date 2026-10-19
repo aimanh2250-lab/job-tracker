@@ -6,6 +6,8 @@ import com.aiman.jobtracker.dto.RegisterRequest;
 import com.aiman.jobtracker.dto.UserResponse;
 import com.aiman.jobtracker.entity.User;
 import com.aiman.jobtracker.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthService {
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
@@ -29,12 +32,14 @@ public class AuthService {
         }
         String hash = passwordEncoder.encode(request.password());
         User saved = userRepository.save(new User(request.email(), hash)); // Why hash? easy part
+        log.info("New user registered with id {}", saved.getId());
         return new UserResponse(saved.getId() , saved.getEmail());
     }
     public LoginResponse login(LoginRequest request) { //email or password is incorrect. throw error
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password, Please try again !"));
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            log.warn("Failed login attempt");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password, Please try again !");
         }
         String token = tokenService.createToken(user.getEmail()); //make a token for this user email only
