@@ -7,6 +7,8 @@ import com.aiman.jobtracker.entity.Status;
 import com.aiman.jobtracker.entity.User;
 import com.aiman.jobtracker.repository.JobRepository;
 import com.aiman.jobtracker.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import java.util.UUID;
 
 @Service
 public class JobService {
+    private static final Logger log = LoggerFactory.getLogger(JobService.class);
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
     @Value("${app.upload-dir}")
@@ -58,6 +61,7 @@ public class JobService {
          job.setNotes(request.notes());
          job.setUser(user); //the user
          JobApplication saved = jobRepository.save(job); //save it
+         log.info("User {} created job {}", user.getId(), saved.getId());
          return toResponse(saved); //send it back Data transfer obj
     }
     public Page<JobResponse> list(String email, String q, Status status, Pageable pageable){ //my job
@@ -89,6 +93,7 @@ public class JobService {
         JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
         jobRepository.delete(jobApplication);
+        log.info("User {} created job {}", user.getId(), id);
     }
 
     public void setUploadDir(String uploadDir) {
@@ -108,6 +113,7 @@ public class JobService {
         String name = UUID.randomUUID() + (file.getContentType().equals("application/pdf") ? ".pdf" : ".docx"); //the server makes the name, and the user’s file name is never used
         Files.copy(file.getInputStream(), dir.resolve(name), StandardCopyOption.REPLACE_EXISTING); //saves the file inside that folder, under the safe name
         jobApplication.setResumePath(name);
+        log.info("User {} created job {}", user.getId(), id);
         return toResponse(jobRepository.save(jobApplication));
     }
 
