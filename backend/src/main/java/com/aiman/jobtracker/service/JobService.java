@@ -93,7 +93,7 @@ public class JobService {
         JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Job not found"));
         jobRepository.delete(jobApplication);
-        log.info("User {} created job {}", user.getId(), id);
+        log.info("User {} deleted job {}", user.getId(), id);
     }
 
     public void setUploadDir(String uploadDir) {
@@ -113,7 +113,7 @@ public class JobService {
         String name = UUID.randomUUID() + (file.getContentType().equals("application/pdf") ? ".pdf" : ".docx"); //the server makes the name, and the user’s file name is never used
         Files.copy(file.getInputStream(), dir.resolve(name), StandardCopyOption.REPLACE_EXISTING); //saves the file inside that folder, under the safe name
         jobApplication.setResumePath(name);
-        log.info("User {} created job {}", user.getId(), id);
+        log.info("User {} uploaded resume for job {}", user.getId(), id);
         return toResponse(jobRepository.save(jobApplication));
     }
 
