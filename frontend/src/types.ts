@@ -9,6 +9,7 @@ export interface Job {
     notes : string | null; //notes can be empty
     createdAt: string;
     status : Status;
+    hasResume : boolean;
 }
 
 export interface JobPage {

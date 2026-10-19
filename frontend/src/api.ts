@@ -4,7 +4,11 @@ const BASE_URL = "http://localhost:8080"; //backend address
 
 export async function api(path: string, options: RequestInit = {}) {
     const token = localStorage.getItem("token"); //read token from local storage
-    const headers: Record<string, string> = {"Content-Type": "application/json"};
+    const headers: Record<string, string> = {};
+    if (!(options.body instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+    }
+
     if (token){
         headers["Authorization"] = "Bearer " + token; //send token from Auth with Bearer in front
     }
