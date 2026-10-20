@@ -53,3 +53,27 @@ You need Java 21, Node 24 and PostgreSQL 17 (or use the database command below),
 
 ## Run the tests
 `cd backend` then `./mvnw test`. The startup test needs the database running and the .env file.
+
+## Project structure
+```
+job-tracker/
+├── backend/                  Spring Boot REST API
+│   └── src/main/java/com/aiman/jobtracker/
+│       ├── controller/       handles HTTP requests and responses
+│       ├── service/          business rules and owner checks
+│       ├── repository/       saves and loads data (Spring Data JPA)
+│       ├── entity/           database tables as Java classes
+│       ├── dto/              what goes in and out between browser and app
+│       ├── config/           security rules, JWT, CORS, password hashing
+│       └── exception/        catches errors from all controllers
+├── frontend/                 React app
+│   └── src/                  pages/ = screens, api.ts = talks to the backend, types.ts = data shapes
+├── docs/design.md            database tables and API endpoints
+├── compose.yaml              starts database, backend and frontend
+└── .github/workflows/        runs the backend tests on every push
+```
+
+### How a request flows
+browser → api.ts adds the token → controller → service → repository → PostgreSQL
+
+The database tables and the full API list are in [docs/design.md](docs/design.md).
