@@ -35,7 +35,7 @@ You only need Docker. Docker builds the Java and React parts for you.
    cp .env.example .env
    openssl rand -base64 32
    ```
-   Paste the key after JWT_SECRET= in .env
+   Paste the key after JWT_SECRET= in .env .
    On Windows PowerShell (no openssl), make the key with:
    ```powershell
    $b = New-Object byte[] 32; [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b); [Convert]::ToBase64String($b)
