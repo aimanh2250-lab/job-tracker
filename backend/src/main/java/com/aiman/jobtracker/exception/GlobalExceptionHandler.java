@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler (ResponseStatusException.class) //
+    @ExceptionHandler (ResponseStatusException.class)
     public ProblemDetail handleStatus (ResponseStatusException ex){
         return ProblemDetail.forStatusAndDetail(ex.getStatusCode(), ex.getReason()); //getStatusCode number (404) & getReason (message)
     }
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler (MethodArgumentTypeMismatchException.class)
     public ProblemDetail handleBadParam (MethodArgumentTypeMismatchException ex){
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid value " + ex.getName()); //+ : join these two text together
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid value for " + ex.getName()); //+ : join these two text together
     }
     @ExceptionHandler (MaxUploadSizeExceededException.class)
     public ProblemDetail handleTooBig (MaxUploadSizeExceededException ex){
