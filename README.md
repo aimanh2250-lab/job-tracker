@@ -90,3 +90,24 @@ The database tables and the full API list are in [docs/design.md](docs/design.md
 | Resumes saved on disk with server-made names | Prevents filename conflicts and attacks | needs a disk/volume; cloud storage would scale better |
 | Service tests with Mockito (no database) | Tests business logic without databases | they don't test the SQL queries or controllers |
 | JWT key in `.env`, not in the code | Keeps secret keys outside source code | the reviewer has to create the key once |
+
+## What I'd improve
+- show an error message when the server can’t be reached (right now the list just stays empty)
+- use an httpOnly cookie + refresh tokens instead of localStorage, so logout can cancel a token
+- add more tests: controller tests (MockMvc), database tests (Testcontainers), frontend tests
+- delete the old resume file when it’s replaced or the job is deleted (right now old files stay on disk)
+- check the file’s real content, not only the type the browser says it is
+
+## AI usage
+The assessment allows AI for guidance and research only. I used Claude (Anthropic) as a tutor and code reviewer. I typed the project code myself and made the design choices. AI explained concepts, pointed me to documentation, reviewed my code line by line, and tested tricky setups in separate practice projects before I used them.
+
+- **10 Oct, planning:** AI helped me choose the app idea and a 14-day plan, gave install commands (JDK 21, IntelliJ) and Spring Initializr settings, and explained Conventional Commits.
+- **10 Oct, design:** AI showed a worked example for a different app (a library). I then picked my tables, status type, resume storage, API query options, `ddl-auto` and packages by layer from 2-option choices, and AI wrote my picks into `docs/design.md`.
+- **10–11 Oct, entities, repositories, register:** written by me using generic "library" examples, the Spring guide "Accessing Data with JPA" and Baeldung; AI reviewed every line.
+- **11–12 Oct, JWT login:** I chose Spring's built-in resource server over jjwt. The security setup comes from the Spring Security docs ("Default JWT Configuration", "Trusting a Single Symmetric Key"); AI gave a generic example for the token encoder, tested the setup first and warned me about 2 traps (HS256 header, permitting `/error`).
+- **12–13 Oct, job CRUD + search:** for the first JobService methods AI gave fill-in-the-blank shapes; after that we switched to plain explanations plus examples from other topics. The search query is based on the Spring Data JPA docs; AI found a PostgreSQL null-search problem in a practice database first.
+- **13 Oct, error handling and CORS:** global error handler: standard ProblemDetail pattern suggested by my AI tutor, checked against the Spring "Error Responses" docs (RFC 9457). AI tested that the CORS docs example also needs allowed headers.
+- **13–18 Oct, frontend:** concepts explained step by step; I used MDN "Using the Fetch API", react.dev, React Router, Tailwind and HyperUI; AI reviewed each step.
+- **18–19 Oct, resume upload/download:** AI explained multipart uploads and blob downloads and found that the download sent the wrong file type.
+- **19 Oct, logging, tests, CI, Docker, secrets:** AI pointed me to the docs (SLF4J, reflectoring.io, JUnit, Mockito, GitHub Actions, Docker, an nginx guide), gave file outlines with blanks, and tested the Docker setup first. When I was stuck, AI pasted the exact docs examples for me to adapt. AI also guided moving the JWT key into `.env` and GitHub Secrets.
+- **20 Oct, clean-up and README:** AI scanned my code for wrong comments and unused files. For this README, AI gave the outline (some parts as fill-in templates), the version numbers, run commands and plain explanations of my design choices; I filled them in and AI corrected the wording.
