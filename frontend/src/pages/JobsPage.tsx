@@ -58,9 +58,8 @@ export default function JobsPage() {
                 <header className="flex items-center justify-between mb-6">
                     <div>
                         <h1 className="text-2xl font-bold">My Jobs</h1>
-                        <p className="text-sm text-gray-500">{totalElements} applications</p>
+                        <p className="text-sm text-gray-500">{totalElements} {totalElements === 1 ? "application" : "applications"}</p>
                     </div>
-
                     <div className="flex gap-2">
                         <button className="bg-blue-600 text-white rounded p-2" onClick={handleLogout}>Logout</button>
                         {/* logout button */}
@@ -138,6 +137,7 @@ export default function JobsPage() {
                         </div>
                     ))}
                 </div>
+                {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-3 mt-8">
                 <button className="bg-sky-500 hover:bg-sky-700 text-white rounded p-2 disabled:opacity-50"
                         onClick={() => setPage(page - 1)} disabled={page === 0}>Previous
@@ -148,6 +148,7 @@ export default function JobsPage() {
                         onClick={() => setPage(page + 1)} disabled={page + 1 >= totalPages}>Next
                 </button> {/* go forward one page; faded on the last page */}
                 </div>
+                )}
             </div>
         </div>
 
