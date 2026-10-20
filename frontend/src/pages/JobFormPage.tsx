@@ -78,6 +78,9 @@ export default function JobFormPage() {
                     className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Notes" value={notes}
                     onChange={(e) => setNotes(e.target.value)}/>
+                {!isEdit && (
+                    <p className="text-sm text-gray-500">Save the job first, then you can upload a resume from Edit.</p>
+                )}
                 {isEdit && (
                     <div className="flex items-center gap-2">
                         <input type="file" accept=".pdf,.docx" className="text-sm"
