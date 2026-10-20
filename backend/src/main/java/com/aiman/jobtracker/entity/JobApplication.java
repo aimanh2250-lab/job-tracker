@@ -30,7 +30,7 @@ public class JobApplication {
     private String notes;
     private String resumePath;
 
-    @ManyToOne(optional = false) //Many roles to one user !!!!
+    @ManyToOne(optional = false) //many job applications belong to one user
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -38,11 +38,11 @@ public class JobApplication {
     @Column(nullable = false)
     private Status status;
 
-    public void setUser(User user) { //method to change a field (setCompany)
+    public void setUser(User user) { //method to change a field (setUser)
         this.user = user;
     }
 
-    public void setStatus(Status status) { //method to change a field (setCompany)
+    public void setStatus(Status status) { //method to change a field (setStatus)
         this.status = status;
     }
 

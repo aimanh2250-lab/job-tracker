@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.entity; //one database table eg Job application class > job_application table
+package com.aiman.jobtracker.entity;//the job status list
 
 public enum Status {
     APPLIED,

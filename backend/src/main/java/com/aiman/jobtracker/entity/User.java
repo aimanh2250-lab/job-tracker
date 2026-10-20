@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.entity; //one database table eg Job application class > job_application table
+package com.aiman.jobtracker.entity;//one database table eg Job application class > users table
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;

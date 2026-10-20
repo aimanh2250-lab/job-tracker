@@ -1,4 +1,4 @@
-package com.aiman.jobtracker.config; //setup that get from application.properties(sec key value), rules (who may enter) inside securityconfig(setup classes: security rules, token maker/checker, password scramble)
+package com.aiman.jobtracker.config; //password hashing (BCrypt)
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

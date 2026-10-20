@@ -3,8 +3,8 @@ package com.aiman.jobtracker.exception; //Catches errors from all controllers
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException; //catch broken bodies
-import org.springframework.web.bind.MethodArgumentNotValidException; //the error @Valid thros when a rule fails
-import org.springframework.web.bind.annotation.ExceptionHandler; //when this error "  " happend, run this method
+import org.springframework.web.bind.MethodArgumentNotValidException; //the error @Valid throws when a rule fails
+import org.springframework.web.bind.annotation.ExceptionHandler; //when this error "  " happened, run this method
 import org.springframework.web.bind.annotation.RestControllerAdvice; //watch all controllers for errors
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException; //catch wrong value
 import org.springframework.web.multipart.MaxUploadSizeExceededException;

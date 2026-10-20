@@ -26,11 +26,11 @@ public class JobController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) //Create Method
-    public JobResponse create (@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody JobRequest request) { //Valid : stop automatic constrains
+    public JobResponse create (@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody JobRequest request) { //Valid: runs the checks (@NotBlank) before the method
         return jobService.create(jwt.getSubject() , request);           //Requestbody: body (JSON Form)
     }
 
-    @GetMapping //List Method means open page cna see all the application
+    @GetMapping //List Method means open page can see all the application
     public Page<JobResponse> list (@AuthenticationPrincipal Jwt jwt, @RequestParam(required = false) String q, @RequestParam(required = false) Status status, @PageableDefault(size = 10, sort = "appliedDate", direction = Sort.Direction.DESC) Pageable pageable) {
         return jobService.list(jwt.getSubject(), q, status, pageable); //Req Param : reads the extra settings after the ? in an address (eg:/api/jobs(dish)?q=grab&status=APPLIED(extra wish))
     }                                                                  //Searching only asks for data, so the search words go in the address. Saving sends data, so the form goes in the body
@@ -51,7 +51,7 @@ public class JobController {
         jobService.delete(jwt.getSubject(), id);
     }
 
-    @PostMapping(value = "/{id}/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //get one method means to see the job details
+    @PostMapping(value = "/{id}/resume", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //upload a resume (PDF or DOCX) for this job
     public JobResponse uploadResume (@AuthenticationPrincipal Jwt jwt, @PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException { //AuthenticationPrincipal:the token
         return jobService.uploadResume(jwt.getSubject(), id, file);
     }

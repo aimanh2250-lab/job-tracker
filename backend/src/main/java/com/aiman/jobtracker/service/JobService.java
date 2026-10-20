@@ -96,10 +96,6 @@ public class JobService {
         log.info("User {} deleted job {}", user.getId(), id);
     }
 
-    public void setUploadDir(String uploadDir) {
-        this.uploadDir = uploadDir;
-    }
-
     public JobResponse uploadResume(String email, Long id, MultipartFile file) throws IOException {
         User user = findUser(email);
         JobApplication jobApplication = jobRepository.findByIdAndUser(id, user)

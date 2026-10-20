@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record JobRequest( //Rule : @Notblank and etc must be inside brakcet for record
+public record JobRequest( //Rule : @Notblank and etc must be inside bracket for record
         @NotBlank String company,
         @NotBlank String role,
         @NotNull LocalDate appliedDate,
