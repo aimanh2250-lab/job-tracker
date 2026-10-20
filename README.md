@@ -77,3 +77,16 @@ job-tracker/
 browser → api.ts adds the token → controller → service → repository → PostgreSQL
 
 The database tables and the full API list are in [docs/design.md](docs/design.md).
+
+## Design decisions
+| Decision | Why | Trade-off |
+|---|---|---|
+| JWT login (1 hour, no server sessions) | Backend stays stateless; fits a separate frontend | a token can't be cancelled early; it lives until it expires |
+| Token kept in localStorage | Simplest with fetch: read it before each request | JavaScript can read it; an httpOnly cookie would be safer |
+| Another user's job returns 404, not 403 | Hides whether resources exist | — |
+| Same 401 message for wrong email and wrong password | Prevents revealing account information | — |
+| `ddl-auto=update` instead of Flyway | Quick for a small project, no migration files | no version history of database changes |
+| Packages by layer | Organizes code by technical responsibility | in a big app, one feature is spread over many folders |
+| Resumes saved on disk with server-made names | Prevents filename conflicts and attacks | needs a disk/volume; cloud storage would scale better |
+| Service tests with Mockito (no database) | Tests business logic without databases | they don't test the SQL queries or controllers |
+| JWT key in `.env`, not in the code | Keeps secret keys outside source code | the reviewer has to create the key once |
